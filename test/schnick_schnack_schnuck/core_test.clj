@@ -2,6 +2,10 @@
   (:require [clojure.test :refer :all]
             [schnick-schnack-schnuck.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+
+(deftest rand-rock-paper-scissors-test
+  (testing "should return random value from list "
+    (with-redefs [rand-int (constantly 2)]                  ;fix rand-int for testing
+
+      (is (= (rand-value-from ["PAPER" "SCISSORS" "ROCK"])
+             "ROCK")))))
