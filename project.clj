@@ -10,6 +10,7 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [compojure "1.6.2"]
                  [http-kit "2.5.3"]
+                 [ring/ring-defaults "0.3.2"]
                  [org.clojure/data.json "2.3.1"]]
   :repl-options {:init-ns schnick-schnack-schnuck.core}
   :main schnick-schnack-schnuck.core

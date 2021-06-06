@@ -9,3 +9,10 @@
 
       (is (= (rand-value-from ["PAPER" "SCISSORS" "ROCK"])
              "ROCK")))))
+
+(deftest beats?-test
+  (testing "Win"
+    (is (beats? "rock" "siss" {"rock" ["siss"]})))
+  (testing "No win"
+    (is (not (beats? "a" "b" {"a" ["c"]})))
+    (is (not (beats? "a" "a" {"a" ["c"]})))))
