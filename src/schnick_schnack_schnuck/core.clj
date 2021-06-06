@@ -9,17 +9,7 @@
   (:import (java.io PushbackReader)
            (java.util List)))
 
-(def rock "ROCK")
-(def paper "PAPER")
-(def sciss "SCISSORS")
-
-(def rps-values [rock paper sciss])
-
-(def rps-beating {rock  [sciss]
-                  sciss [paper]
-                  paper [rock]})
-
-(defn config []
+(def config
   (-> (io/resource (str "config.edn"))
       (io/reader)
       (PushbackReader.)
@@ -60,16 +50,17 @@
      :headers {"Content-Type" "application/json"}
      :body    (json/write-str {:result "UNKNOWN"})})
 
-(defn classic-game-handler [request]
+(defn game-handler [game-conf request]
   (or (some-> (extract-json-data request)
-              (validate-hand rps-values)
-              (assoc :computer-hand (rand-value-from rps-values))
-              (calc-result rps-beating)
+              (validate-hand (:values game-conf))
+              (assoc :computer-hand (rand-value-from (:values game-conf)))
+              (calc-result (:beating game-conf))
               (build-response))
       unknown-response))
 
 (defroutes app-routes
-           (POST "/game" [] classic-game-handler)
+           (POST "/game" [] (partial game-handler (:rock-paper-scissors (:games config))))
+           (POST "/rpsls" [] (partial game-handler (:rock-paper-scissors-lizard-spock (:games config))))
            (route/not-found {:status 404}))
 
 (defn middleware-config []
@@ -77,8 +68,7 @@
       (assoc-in [:security :anti-forgery] false)))
 
 (defn -main [& args]
-  (let [config (config)
-        port   (Integer/parseInt (or (System/getenv "PORT") (:default-port config)))]
+  (let [port   (Integer/parseInt (or (System/getenv "PORT") (:default-port config)))]
 
     (println (middleware-config))
     (server/run-server (wrap-defaults #'app-routes (middleware-config)) {:port port})

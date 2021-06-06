@@ -1,3 +1,14 @@
 {
  :default-port "4242"
- }
+ :games        {:rock-paper-scissors              {:values  ["ROCK" "PAPER" "SCISSORS"]
+                                                   :beating {"ROCK"     ["SCISSORS"]
+                                                             "SCISSORS" ["PAPER"]
+                                                             "PAPER"    ["ROCK"]}}
+                :rock-paper-scissors-lizard-spock {
+                                                   :values  ["ROCK" "PAPER" "SCISSORS" "LIZARD" "SPOCK"]
+                                                   :beating {"ROCK"     ["SCISSORS" "LIZARD"]
+                                                             "SCISSORS" ["PAPER" "LIZARD"]
+                                                             "PAPER"    ["ROCK" "SPOCK"]
+                                                             "LIZARD"   ["PAPER" "SPOCK"]
+                                                             "SPOCK"    ["ROCK" "SCISSORS"]
+                                                             }}}}
